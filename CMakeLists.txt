@@ -49,8 +49,6 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${yaml-cpp_SOURCE_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC yaml-cpp)
-# Link yaml-cpp to your project
-target_link_libraries(${PROJECT_NAME} PRIVATE yaml-cpp)
 
 # TO CMAKE THE PROJECT AND MAKE it suitable for compiling run 
 #   cmake .
