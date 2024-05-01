@@ -25,11 +25,11 @@ bool file_IO::csv_import(string file_address, dataTable *table){
             cell = "";
           }
           catch(const std::invalid_argument& e){
-            std::cerr << "FAILED TO READ CORRUPTED FILE"<< endl;
+            std::cerr << "FAILED TO READ CORRUPTED FILE  "<< e.what() << endl;
             return false;
           }
           catch(const std::out_of_range& e){
-            std::cerr << "VERY LARGE OR VERY SMALL values IN THE FILE"<< endl;
+            std::cerr << "VERY LARGE OR VERY SMALL values IN THE FILE  "<<  e.what()  << endl;
             return false;
           }
 
@@ -68,8 +68,8 @@ bool file_IO::csv_export(string file_address, dataTable table){
     return false;
   }else{
 
-    int col_index;
-    int row_index;
+    unsigned int col_index;
+    unsigned int row_index;
     for(row_index = 0; row_index  < table.get_row_num(); row_index++){
       for(col_index = 0; col_index < (table.get_col_num() - 1); col_index++){
         outputFile << table.getData(row_index,col_index) << ',';

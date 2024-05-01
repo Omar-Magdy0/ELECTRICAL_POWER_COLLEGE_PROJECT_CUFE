@@ -48,6 +48,17 @@ class signal{
     bool is_harmonic;
     bool is_periodic;
 
+
+
+    double avg_sample_time;                   //CHECKED
+    double timeStart;                         //CHECKED
+    double timeEnd;                           //CHECKED
+    unsigned int samples_num;                          //CHECKED
+    double periods_num;                       //CHECKED
+    double base_frequency;                    //CHECKED
+    double base_angular_frequency;            //CHECKED
+    double periodic_time;                     //CHECKED
+    double duty_cycle;                        //CHECKED
   }analytics;
 
     

@@ -9,13 +9,13 @@ dataTable::dataTable(){
 }
 
 
-int dataTable::get_row_num(){
+unsigned int dataTable::get_row_num(){
   return _rows_num;
 }
 
 
 
-int dataTable::get_col_num(){
+unsigned int dataTable::get_col_num(){
   return _cols_num;
 }
 
@@ -24,7 +24,7 @@ int dataTable::get_col_num(){
     /**
       @brief inserts a value to a cell of dataTable instance with that address
     */
-void dataTable::insertData(double d,  int row , int col){
+void dataTable::insertData(double d,  unsigned int row , unsigned int col){
   if(row >= _rows_num){
     _rows_num = row + 1;
   }
@@ -71,7 +71,7 @@ void dataTable::eraseColumn(int start_col, int cols_num){
     */
 
 void dataTable::refresh(){
-  for(int i = 0; i < _rows_num; i++){
+  for(unsigned int i = 0; i < _rows_num; i++){
     if(_table.at(i).size() <= _cols_num){
       _table.at(i).resize(_cols_num);
     }

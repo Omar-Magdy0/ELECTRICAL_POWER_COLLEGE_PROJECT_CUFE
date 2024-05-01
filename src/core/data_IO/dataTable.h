@@ -15,8 +15,8 @@ using namespace std;
 
 class dataTable{
   private:
-    int _cols_num;
-    int _rows_num;
+    unsigned int _cols_num;
+    unsigned int _rows_num;
     vector<vector<double>> _table; 
 
 
@@ -26,10 +26,10 @@ class dataTable{
   public:
 
     dataTable(); 
-    int get_row_num();
-    int get_col_num();
+    unsigned int get_row_num();
+    unsigned int get_col_num();
 
-    void insertData(double d, int row , int col);
+    void insertData(double d, unsigned int row , unsigned int col);
     double getData(int row , int col);
 
     void eraseRow(int start_row, int rows_num = 1);
