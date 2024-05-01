@@ -21,14 +21,12 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
     GIT_TAG        yaml-cpp-0.7.0
 )
-FetchContent_MakeAvailable(yaml-cpp)
 
 
-if(NOT yaml-cpp_POPULATED)
   message(STATUS "Fetching yaml-cpp...")
   FetchContent_Populate(yaml-cpp)
   add_subdirectory(${yaml-cpp_SOURCE_DIR} ${yaml-cpp_BINARY_DIR})
-endif()
+
 
 
 
