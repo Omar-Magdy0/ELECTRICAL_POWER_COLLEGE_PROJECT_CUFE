@@ -86,3 +86,28 @@ struct eng_multiplier{
 };
 
 
+#include <ctime>
+#include <cmath>
+inline float getCurrentTime(){
+  return float(clock()/CLOCKS_PER_SEC);
+}
+inline void replace(char c){
+  cout << "\b" << c << endl;
+}
+ 
+
+struct process_feedback{
+  private:
+
+  float lastPerc = 0;
+  float startTime;
+  bool update_str = false;
+  int char_place_idx = 0;
+
+  public:
+
+  void update_state(float perc,char c,std::string str);
+  void load_string(std::string str);
+  float time_ellapsed();
+  process_feedback();
+};

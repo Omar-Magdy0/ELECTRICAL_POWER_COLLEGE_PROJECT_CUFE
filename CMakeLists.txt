@@ -32,6 +32,14 @@ endif()
 
 
 
+if(NOT yaml-cpp_POPULATED)
+  message(STATUS "Fetching yaml-cpp...")
+  FetchContent_Populate(yaml-cpp)
+  add_subdirectory(${yaml-cpp_SOURCE_DIR} ${yaml-cpp_BINARY_DIR})
+endif()
+
+
+
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 message(STATUS "Source files: ${SOURCES}")
 
@@ -45,10 +53,14 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 # Add executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# Include directories for yaml-cpp
+
 target_include_directories(${PROJECT_NAME} PUBLIC ${yaml-cpp_SOURCE_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC yaml-cpp)
+
+
+# Link yaml-cpp to your project
+
 
 # TO CMAKE THE PROJECT AND MAKE it suitable for compiling run 
 #   cmake .

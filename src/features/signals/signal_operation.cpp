@@ -1,8 +1,10 @@
 #include "signal_operation.h"
 #include "iostream"
+
 #define _USE_MATH_DEFINES
 #include "cmath"
 #include "math.h"
+
 
 
 
@@ -236,8 +238,10 @@ double _signal_operation::phase_diff(signal *base_sig1, signal *base_sig2)
   while(reference_time <= time_start){
     reference_time += base_sig1->analytics.periodic_time;
   }
+
   double sum_phaseDiff = 0;
   //NOW WE HAVE THE the FIRST PEAK of BASE_SIG1 TIME THAT IS IN THE TIME DOMAIN OF BASE_SIG2
+
   size_t idx = 0;
   for(idx; idx < base_sig2->get_valMaximas().time.size(); idx++){
     double time_diff = base_sig2->get_valMaximas().value.at(idx) - reference_time;
