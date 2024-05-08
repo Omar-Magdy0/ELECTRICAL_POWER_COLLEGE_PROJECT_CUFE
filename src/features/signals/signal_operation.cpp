@@ -323,7 +323,7 @@ void _signal_operation::firstO_lowPass_filter(signal* base_sig, signal* resultan
   //CASCADE FILTERS THIS WAY
   while(order--){
     for(unsigned int idx = 0; idx < base_sig->signal_data.get_row_num(); idx++){ 
-
+        
       double input = base_sig->getValue(idx,_val);
       double output = (1 - filter_parameter)*last_output + filter_parameter*input;
       resultant->putValue(output ,idx, _val);
@@ -331,7 +331,7 @@ void _signal_operation::firstO_lowPass_filter(signal* base_sig, signal* resultan
       last_output = output;
     }
   }
-
+  if (resultant == base_sig)resultant->timeDomain_analysed = false;
   //RECURSION FOR FILTER CASCADING
   //RECURION APPROACH FAIL AT HIGH FILTER ORDERS(PROBABLE STACK OVERFLOW)
 }
