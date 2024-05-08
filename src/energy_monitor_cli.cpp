@@ -12,12 +12,23 @@ int main(){
   dataTable dataContainer;
   file_IO file_manipulation;
 
+
+
+  cout << "EXTRACTING DATA FROM THE FILE.........." << endl;
+
+
   file_manipulation.data_import("Load1",&dataContainer,csv);
+
+
   cout << "COLUMNS NUMBER OF CURRENT TABLE IS :::" << dataContainer.get_col_num() << endl;
   cout << "ROWS NUMBER OF CURRENT TABLE IS :::" << dataContainer.get_row_num() << endl;
 
   /*I HAD TO EXTRACT COLUMNS AND MANIPULATE THEM SINCE THE EXPECTED FORMAT WAS NOT PROVIDED*/
 
+
+
+
+  cout << "REARRANGING DATA.........." << endl;
   std::vector<double> time;
   dataContainer.extractColumn(0,&time);
   std::vector<double> current;
@@ -44,7 +55,7 @@ int main(){
   _power result_power = _power(&voltage_input,&current_input);
 
 
-
+  cout << "ANALYSING UNFILTERED SIGNALS .....\n\n" << endl;
   cout << "\n***********VOLTAGE ANALYSIS******\n" << endl;
   analyticBlock(&voltage_input);
   cout << "\n***********CURRENT ANALYSIS******\n" << endl;
@@ -54,34 +65,57 @@ int main(){
   cout << "POWER FACTOR :::" << result_power.get_PF() << endl;
   cout << "active :::" << result_power.get_active() << endl;
   cout << "apparent :::" << result_power.get_apparent() << endl;
-  voltage_input.exportSignal("voltage_output");
-  current_input.exportSignal("current_output");
-  result_power.exportSignal("power_output");
 
 
-  signal_operation_global.firstO_lowPass_filter(&voltage_input,&voltage_input,500);
-  signal_operation_global.firstO_lowPass_filter(&current_input,&current_input,500);
-  result_power = _power(&voltage_input,&current_input);
+  cout << "TYPE \"EXPORT\" TO EXPORT UNFILTERED else to pass" << endl;
+  cin >> user_input;
+
+  if (user_input == "EXPORT") {
+      cout << "EXPORTING UNFILTERED .....\n\n" << endl;
+
+      voltage_input.exportSignal("voltage_output");
+      current_input.exportSignal("current_output");
+      result_power.exportSignal("power_output");
+  }
+
+  
+  cout << "Filtering .....\n\n" << endl;
+  _current filtered_current;
+  _voltage filtered_voltage;
+  
+  
+  
+  signal_operation_global.firstO_lowPass_filter(&voltage_input,&filtered_voltage,500);
+  signal_operation_global.firstO_lowPass_filter(&current_input,&filtered_current,500);
+  result_power = _power(&filtered_voltage,&filtered_current);
 
   cout << "\n***********FILTERED VOLTAGE ANALYSIS******\n" << endl;
-  analyticBlock(&voltage_input);
+  analyticBlock(&filtered_voltage);
   cout << "\n***********FILTERED CURRENT ANALYSIS******\n" << endl;
-  analyticBlock(&current_input);
+  analyticBlock(&filtered_current);
   cout << "\n***********FILTERED POWER ANALYSIS******\n" << endl;
   analyticBlock(&result_power);
   cout << "POWER FACTOR :::" << result_power.get_PF() << endl;
   cout << "active :::" << result_power.get_active() << endl;
   cout << "apparent :::" << result_power.get_apparent() << endl;
-  voltage_input.exportSignal("voltage_output_filtered");
-  current_input.exportSignal("current_output_filtered");
-  result_power.exportSignal("power_output_filtered");
 
+  cout << "TYPE \"EXPORT\" TO EXPORT FILTERED else to pass" << endl;
+  cin >> user_input;
+  if (user_input == "EXPORT") {
+      cout << "EXPORTING FILTERED .....\n\n" << endl;
+      voltage_input.exportSignal("voltage_output_filtered");
+      current_input.exportSignal("current_output_filtered");
+      result_power.exportSignal("power_output_filtered");
+  }
   cout << "NOW SIMULATING THE APPLIANCE MODEL USING FILTERED CURRENT AND VOLTAGE.........." << endl;
 
+
+  cout << "SIMULATING APPLIANCE WITH FILTERED CURRENT&VOLTAGE .....\n\n" << endl;
   appliance modelAppliance = appliance(&voltage_input,&current_input,"refrigerator");
   unsigned int steps_number = modelAppliance.get_power()->get_analytics()->samples_num;
   for(unsigned int step = 0;  step < steps_number ; step++)modelAppliance.readStep();
 
+  cout << "SIMULATION RESULTS\n\n" << endl;
   cout << "VOLTAGE TRIPPED : " << bool_to_string(modelAppliance.voltage_tripped()) << endl;
   if(modelAppliance.voltage_tripped()){
     cout << "AT :::" << modelAppliance.voltage_tripTime() << endl;
@@ -98,7 +132,11 @@ int main(){
 
   cout << "ENERGY COST :::" << tarrif_calc(energy) << " EGP" <<endl; 
 
-
+  cout << "TYPE QUIT TO EXIT" << endl;
+  while (1) {
+     cin >> user_input;
+      if (user_input == "QUIT")break;
+  }
 
 
   return 1;
