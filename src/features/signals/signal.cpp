@@ -21,7 +21,7 @@ bool signal::loadData(string name, string fileLocation){
   }
 }
 
-bool signal::loadData(dataTable _data)
+bool signal::loadData(v_container _data)
 {
   signal_data = _data;
   return true;
@@ -68,7 +68,6 @@ double signal::_vdt(double v1, double v2, double t1, double t2){
 bool signal::pre_analyze()
 {
 
-
     this->data_viable = true;
 
 
@@ -83,7 +82,7 @@ bool signal::pre_analyze()
     return false;
   }else{
 
-
+  
 
   //START DOING BASIC ANALYTICS   
     unsigned int row_index = 0;
@@ -102,7 +101,6 @@ bool signal::pre_analyze()
 
     //START FILLING COLUMNS FOR integration with respect to time , first derivative , second derivative;
     for(row_index = 1; row_index < (signal_data.get_row_num() - 1); row_index++){
-
       current_val = getValue(row_index,_val);
       next_val = getValue(row_index + 1,_val);
       current_time = getValue(row_index,_time);
@@ -137,7 +135,6 @@ bool signal::pre_analyze()
     analytics.timeEnd = current_time;
     analytics.avg_sample_time = (analytics.timeEnd - analytics.timeStart)/(analytics.samples_num - 1) ;
     refreshData();
-
     return true;
   }
 }
@@ -459,7 +456,6 @@ bool signal::soft_analyze(){
 bool signal::analyse(){
 
   if(pre_analyze()){
-
     //FUTURE WORK THAT INCLUDES TRANSFORM NON EQUALY TIME-SPACED discrete signal into equally time-spaced discrete signal using approximation techniques
     soft_analyze();
     timeDomain_analysed = true;
@@ -476,19 +472,57 @@ const signal::_analytics* signal::get_analytics()const
   return &analytics;
 }
 
-const dataTable* signal::get_signal_data() const
+const v_container* signal::get_signal_data() const
 { 
   return &signal_data;
 }
 
 
-bool signal::exportSignal(string name, string fileLocation){
-  file_IO file;
-  //CHECKS IF The data does exist and viable
-  refreshData();
-  if(file.data_export((fileLocation+name), signal_data, csv)){
-    return true;
+bool signal::exportSignal(string name, bool export_all, sig_exp exportType, string fileLocation){
+  if(exportType == sig_exp::csv){  
+    file_IO file;
+    refreshData();
+    if(export_all){
+      if(file.data_export((fileLocation+name), signal_data, csv)){
+        return true;
+      }
+    //if something bad happens when exporting
+      return false;
+    }else{
+      std::vector<double> time;
+      signal_data.extractColumn(_time,time);
+      std::vector<double> values;
+      signal_data.extractColumn(_val,values);
+      v_container wrap;
+      wrap.insertColumn(_time,time);
+      wrap.insertColumn(_val,values);
+      if(file.data_export((fileLocation+name), wrap, csv)){
+        return true;
+      }
+    //if something bad happens when exporting
+      return false;
+    }
+  }else if(exportType == sig_exp::sig){
+    std::ofstream file(fileLocation+name+".sig", std::ios::out | std::ios::binary);
+    if(file.is_open()){
+      if(!this->timeDomain_analysed)this->analyse();
+      double startTime = this->analytics.timeStart;
+      double endTime = this->analytics.timeEnd;
+      double t_sample = this->analytics.avg_sample_time;
+      double time_comp[] = {startTime , t_sample, endTime};
+
+      std::vector<double> values;
+      signal_data.extractColumn(_val,values);
+
+      file.write(reinterpret_cast<const char*>(time_comp) ,sizeof(double)*3);
+      file.write(reinterpret_cast<const char*>(values.data()), values.size()*sizeof(double));
+
+      file.close();
+      return true;
+    }else{
+      return false;
+    }
+  }else{
+    return false;
   }
-  //if something bad happens when exporting
-  return false;
 }

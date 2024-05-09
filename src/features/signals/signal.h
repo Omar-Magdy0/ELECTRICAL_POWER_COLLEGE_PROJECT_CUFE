@@ -6,11 +6,14 @@
 #include <string>
 
 
-
+enum class sig_exp{
+  csv = 0,
+  sig = 1
+};
   
 
 
-
+using v_container = dataTable<double>;
 
 
    //ENUM FOR EASE OF ACCESSING SIGNAL DATA and ARRANGMENT OF COLUMNS
@@ -103,7 +106,7 @@ using json = nlohmann::json;
       std::vector<double> time;
     };
 
-    dataTable signal_data;
+    v_container signal_data;
     maximas_minimas val_maximas;
     maximas_minimas val_minimas;
     maximas_minimas dvBdt_maximas;
@@ -179,12 +182,13 @@ using json = nlohmann::json;
     }
     bool dataViable();
     bool loadData(string name = "signal", string fileLocation = settings.get_setting("signal","import_path"));
-    bool loadData(dataTable _data);
+    bool loadData(v_container _data);
     bool loadData(std::vector<double> time,std::vector<double> vals);
     bool analyse();
-    bool exportSignal(string name = "signal" , string fileLocation = settings.get_setting("signal","export_path"));
+
+    bool exportSignal(string name = "signal" , bool export_all = false, sig_exp expType = sig_exp::csv, string fileLocation = settings.get_setting("signal","export_path"));
     const _analytics* get_analytics()const;
-    const dataTable* get_signal_data()const;
+    const v_container* get_signal_data()const;
 };
 
 

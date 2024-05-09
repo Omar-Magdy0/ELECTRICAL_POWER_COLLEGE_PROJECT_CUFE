@@ -22,39 +22,39 @@ class _signal_operation{
      static float freq_diff_accuracy;
     public:
       //signal with a signal arthimetic
-    signal add(signal* base_sig1, signal* base_sig2, int mode = INTERSECT){
+    signal add(signal& base_sig1, signal& base_sig2, int mode = INTERSECT){
       signal temp;
-      add(base_sig1,base_sig2,&temp,mode);
+      add(base_sig1,base_sig2,temp,mode);
       return temp;
     }
 
-    void add(signal* base_sig1, signal* base_sig2,  signal* resultant, int mode = INTERSECT);
+    void add(signal& base_sig1, signal& base_sig2,  signal& resultant, int mode = INTERSECT);
     
-    signal multiply(signal* base_sig1, signal* base_sig2, int mode = INTERSECT){
+    signal multiply(signal& base_sig1, signal& base_sig2, int mode = INTERSECT){
       signal temp;
-      multiply(base_sig1,base_sig2,&temp,mode);
+      multiply(base_sig1,base_sig2,temp,mode);
       return temp;
     }
 
-    void multiply(signal* base_sig1, signal* base_sig2, signal* resultant, int mode = INTERSECT);
-    double phase_diff(signal* base_sig1, signal* base_sig2);
+    void multiply(signal& base_sig1, signal& base_sig2, signal& resultant, int mode = INTERSECT);
+    double phase_diff(signal& base_sig1, signal& base_sig2);
     
     double integ_vpower(signal base_sig1, int power);
     
 
     //Scalar with a signal arthimetic
-    signal add(signal *base_sig1,  double val){
+    signal add(signal &base_sig1,  double val){
       signal temp;
-      add(base_sig1,  &temp,  val);
+      add(base_sig1,  temp,  val);
       return temp;
     }
-    void add(signal *base_sig1, signal* resultant,  double val);
-    signal multiply(signal *base_sig1, double val){
+    void add(signal &base_sig1, signal &resultant,  double val);
+    signal multiply(signal &base_sig1, double val){
       signal temp;
-      multiply(base_sig1, &temp, val);
+      multiply(base_sig1, temp, val);
       return temp;
     }
-    void multiply(signal *base_sig1, signal* resultant , double val);
+    void multiply(signal &base_sig1, signal &resultant , double val);
     signal logarithmic(signal *base_sig);
 
   //filtering
@@ -64,7 +64,7 @@ class _signal_operation{
     //first order filters returns filtered signals
       //second order filters yet to come
 
-    void firstO_lowPass_filter(signal* base_sig,  signal* resultant,double cutOff_freq,int order=1, double avg_sample_time = -1);
+    void firstO_lowPass_filter(signal& base_sig,  signal& resultant,double cutOff_freq,int order=1, double avg_sample_time = -1);
     signal highPass_filter(signal base_sig, int order=1, int t = cascade);
     signal bangReject_filter(signal base_sig, int order=1, int t = cascade);
     signal bandPass_filter(signal base_sig, int order=1, int t = cascade);

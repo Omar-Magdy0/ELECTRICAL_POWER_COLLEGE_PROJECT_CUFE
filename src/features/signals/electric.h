@@ -50,16 +50,18 @@ class _power: public signal{
 
   public:
 
-    _power(_voltage* volt, _current* current){
+    _power(_voltage &volt, _current &current){
       //GET POWER FROM CURRENT AND VOLTAGE MULTIPLICATION
-      signal_operation_global.multiply(volt,current,this, INTERSECT);
+
+      signal_operation_global.multiply(volt,current,*this, INTERSECT);
+
 
       if(!this->isTimeAnalysed())this->analyse();
       frequency = this->analytics.base_frequency;
       active = this->analytics.avg;
       
       if(stoi(settings.get_setting("electrical","use_rms_for_apparent"))){
-        apparent = current->get_analytics()->rms * volt->get_analytics()->rms;
+        apparent = current.get_analytics()->rms * volt.get_analytics()->rms;
       }else{
         apparent = (this->analytics.avg_ptp)/2;
       }
@@ -77,8 +79,8 @@ class _power: public signal{
       }
 
       powerFactor = (active/apparent);
-      base_current = current;
-      base_volt = volt;
+      base_current = &current;
+      base_volt = &volt;
     }
 
     double get_energy(double time_start,double time_end){

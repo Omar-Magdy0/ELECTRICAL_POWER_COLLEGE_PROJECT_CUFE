@@ -23,14 +23,14 @@ struct file_IO{
   @brief csv File I/O functions 
 */
 private:
-bool csv_import(string file_address, dataTable *table);
-bool csv_export(string file_address, dataTable table);
+bool csv_import(string file_address, dataTable<double> *table);
+bool csv_export(string file_address, dataTable<double> table);
 
 /**
   @brief pdf File I/O functions 
 */
-bool pdf_import(string file_address, dataTable *table);
-bool pdf_export(string file_address, dataTable table);
+bool pdf_import(string file_address, dataTable<double> *table);
+bool pdf_export(string file_address, dataTable<double> table);
 public:
 
 /**
@@ -40,6 +40,6 @@ public:
   @param type file extension
   @return true if operation is successfull false if anything else happens
 */
-bool data_import(string file_address,  dataTable *data,  int type);
-bool data_export(string file_address, dataTable data, int type);
+bool data_import(string file_address,  dataTable<double> *data,  int type);
+bool data_export(string file_address, dataTable<double> data, int type);
 };
