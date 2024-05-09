@@ -37,7 +37,7 @@ class appliance {
 
 
   public:
-    appliance(_voltage* _volt_input,  _current* _result_current = NULL, std::string _name = "appliance"){
+    appliance(_voltage &_volt_input,  _current &_result_current, std::string _name = "appliance"){
       name = _name;
       //READ APPLIANCE PROPERTIES FROM JSON FILE FIRST IF EXISTS IF IT DOESN'T CREATE ONE 
       ifstream file;
@@ -64,22 +64,15 @@ class appliance {
       }
     //LINK THE VOLT TO THE APPLIANCE AND THE RESULT CURRENT TOO
     //IF RESULT CURRENT WAS PROVIDED PROVIDE POWER STATISTICS INSTANTLY
-      volt_input = _volt_input;
-      result_current = _result_current;
+      volt_input = &_volt_input;
+      result_current = &_result_current;
 
       if(!volt_input->isTimeAnalysed())volt_input->analyse();
       if(!result_current->isTimeAnalysed())result_current->analyse();
 
-      if(_result_current != NULL){
-        result_power = new _power(volt_input,result_current);
-        result_power->analyse();
         unkownCurrent = false;
-      }else{
-        result_power = new _power(volt_input,result_current);
-        _result_current = new _current();
-        unkownCurrent = true;
-      }
-
+        result_power = new _power(*volt_input,*result_current);
+        result_power->analyse();
     }  
 
     ~appliance(){

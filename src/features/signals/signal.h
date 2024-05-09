@@ -6,7 +6,10 @@
 #include <string>
 
 
-
+enum class sig_exp{
+  csv = 0,
+  sig = 1
+};
   
 
 
@@ -182,7 +185,8 @@ using json = nlohmann::json;
     bool loadData(v_container _data);
     bool loadData(std::vector<double> time,std::vector<double> vals);
     bool analyse();
-    bool exportSignal(string name = "signal" , string fileLocation = settings.get_setting("signal","export_path"));
+
+    bool exportSignal(string name = "signal" , bool export_all = false, sig_exp expType = sig_exp::csv, string fileLocation = settings.get_setting("signal","export_path"));
     const _analytics* get_analytics()const;
     const v_container* get_signal_data()const;
 };
