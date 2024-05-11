@@ -45,6 +45,7 @@ bool signal::dataViable(){
   return this->data_viable;
 }
 
+
 double signal::_dvBdt(double v1, double v3, double t1, double t2){
   return (v1 - v3)/((t1 - t2)*2); //function for first derivative of discrete data
 }
@@ -332,8 +333,7 @@ bool signal::post_local_maximas_minimas()
   //END OF post_local_maximas_minimas
 }
 
-bool signal::deduce_baseFrequency()
-{
+bool signal::frequency_peakNdtrough(){
   size_t least_extrema_num = val_maximas.value.size() - 1;
   if((val_minimas.value.size() - 1) < least_extrema_num) least_extrema_num = val_minimas.value.size() - 1;
   double sumFrequency_maximaBased = 0;
@@ -361,6 +361,7 @@ bool signal::deduce_baseFrequency()
   if(_maxima_periods.size() > 1){
     //START by assuming it is periodic unless its not
     maxima_periodic = true;
+    cout << base_frequency_maximaBased << "::::::" << base_frequency_minimaBased << endl;
     for(int i = 0;  i < (_maxima_periods.size() - 1); i++){
       if(!isNear(_maxima_periods.at(i),  _maxima_periods.at(i + 1), period_diff_accuracy)){
         maxima_periodic = false;
@@ -406,12 +407,36 @@ bool signal::deduce_baseFrequency()
     return false;
   }
   return true;
+
+
+}
+
+bool signal::frequency_triggerLevel()
+{
+  return false;
+}
+
+bool signal::deduce_baseFrequency(){
+  switch (frequency_calc_type){
+    case peakNdtrough:
+      return frequency_peakNdtrough();
+      break;
+
+    case trigger_level:
+      return frequency_triggerLevel();
+      break;
+
+    default:
+      return false;
+      break;
+  }
 }
 
 bool signal::deduce_avg_rms()
 {  
   double startTime_stamp = analytics.timeStart; 
   double endTime_stamp = 0;
+  //RMS and AVG per period or for the whole signal as a whole
   if(periodic_avg_rms){
     endTime_stamp = analytics.periodic_time * floor(analytics.periods_num) ; 
   }else{
@@ -477,7 +502,7 @@ const v_container* signal::get_signal_data() const
   return &signal_data;
 }
 
-
+// EXPORT AS CSV OR BINARY COMPRESSED FORMATED
 bool signal::exportSignal(string name, bool export_all, sig_exp exportType, string fileLocation){
   if(exportType == sig_exp::csv){  
     file_IO file;
@@ -503,7 +528,7 @@ bool signal::exportSignal(string name, bool export_all, sig_exp exportType, stri
       return false;
     }
   }else if(exportType == sig_exp::sig){
-    std::ofstream file(fileLocation+name+".sig", std::ios::out | std::ios::binary);
+    std::ofstream file(fileLocation+name, std::ios::out | std::ios::binary);
     if(file.is_open()){
       if(!this->timeDomain_analysed)this->analyse();
       double startTime = this->analytics.timeStart;
@@ -513,10 +538,9 @@ bool signal::exportSignal(string name, bool export_all, sig_exp exportType, stri
 
       std::vector<double> values;
       signal_data.extractColumn(_val,values);
-
+      std::vector<float> down_scaled(values.begin(),values.end());
       file.write(reinterpret_cast<const char*>(time_comp) ,sizeof(double)*3);
-      file.write(reinterpret_cast<const char*>(values.data()), values.size()*sizeof(double));
-
+      file.write(reinterpret_cast<const char*>(down_scaled.data()), values.size()*sizeof(float));
       file.close();
       return true;
     }else{
@@ -525,4 +549,68 @@ bool signal::exportSignal(string name, bool export_all, sig_exp exportType, stri
   }else{
     return false;
   }
+}
+
+
+
+//IMPORT A SIGNAL ENCODED IN A BINARY COMPRESSED FORMAT
+bool signal::importSignal(string name, string fileLocation)
+{
+  std::ifstream file(fileLocation+name,  std::ios::binary);
+  if(file.is_open()){
+    //READ THE FIRST 3 doubles in the file as START_TIME - T_SAMPLING - END_TIME
+    
+    //DETERMINE FILE SIZE
+    file.seekg(0, std::ios::end);
+    std::streampos fileSize = file.tellg();
+    file.seekg(0, std::ios::beg);
+    file.clear();
+    std::vector<char> file_data(fileSize);
+    
+    file.read(reinterpret_cast<char*>(file_data.data()), fileSize);
+    double time_comp[3];
+    //READ FIRST 3 doubles in the file as startTime, samplingTime, endTime respectively
+  
+    size_t file_idx = 0;
+    for(file_idx = 0; file_idx < 3*sizeof(double) ; file_idx+=8 ){
+        memcpy(&time_comp[file_idx/sizeof(double)], (file_data.data() + file_idx), sizeof(double));
+    }
+
+    std::vector<float> values;
+    //THE REST OF THE FILE IS FLOATS REPRESENTING VALUES
+    for(file_idx; file_idx < file_data.size() ; file_idx+= sizeof(float) ){
+      float value;
+      memcpy(&value, &file_data[file_idx], sizeof(float));
+      values.push_back(value);
+    }
+
+    double timeStart = time_comp[0];
+    double t_sampling = time_comp[1];
+    double timeEnd = time_comp[2]; 
+
+
+    std::vector<double> upscaled(values.begin(),values.end());
+    std::vector<double> time(values.size());
+    time.at(0) = timeStart;
+    for(unsigned int idx = 1; idx < values.size() ; idx++){
+      time.at(idx) = timeStart + idx*t_sampling;
+    }
+  
+    this->signal_data.insertColumn(_val, upscaled);  
+    this->signal_data.insertColumn(_time,time);
+
+    file.clear();
+    file.close();
+
+
+    return true;
+  }else{
+    return false;
+  }
+}
+
+
+bool signal::pdf_export(std::string name, std::string file_address)
+{
+  return true;
 }

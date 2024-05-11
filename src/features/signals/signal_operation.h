@@ -3,6 +3,12 @@
 
 
 
+/*!
+  @file signal_operation.h
+  @brief this file includes the basic signal_operation class responsible for doing any required manipulation or state-altering functions to signals
+*/
+
+
 
 //Scalar with signal or signal with signal operations
 //FRIEND CLASS TO SIGNALS CAN EDIT THEIR VALUES

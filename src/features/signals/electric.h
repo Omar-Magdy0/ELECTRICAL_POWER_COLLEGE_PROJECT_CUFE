@@ -6,6 +6,11 @@
 #include <math.h>
 
 
+/*!
+  @file electric.h
+  @brief electric specific classes current/voltage/power  that inherit from signals class while adding thier specific properties 
+*/
+
 class _current: public signal{
   public:
     _current(signal sig): signal(sig){

@@ -1,5 +1,14 @@
 #pragma once
 
+
+/*!
+  @file core.h
+  @brief wrap the core folder / include base helper methods and macros used accross the program
+
+*/
+
+
+
 #include "data_IO/data_IO.h"
 #include <stdlib.h>
 #include <type_traits>

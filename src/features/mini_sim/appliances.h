@@ -5,6 +5,17 @@
 #include "../signals/electric.h"
 #include <fstream>
 
+
+/*!
+  @file appliance.h
+  @brief models the appliance using a .json file and contains all the implementations needed for model simulation
+         based on current and voltage readings or voltage and impedance tables
+*/
+
+
+
+
+
 class appliance {
   using json = nlohmann::ordered_json;
   private:
@@ -195,6 +206,9 @@ class appliance {
       return connected;
     }
 
+
+
+    bool pdf_export(string name, string file_address = settings.get_setting("signal","import_path"));
 };
 
 

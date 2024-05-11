@@ -4,6 +4,8 @@
 #include <json.hpp>
 
 
+
+
 using json = nlohmann::ordered_json;
 void default_settings_init(json *def){
   signal_defaults(def);
@@ -21,7 +23,10 @@ void signal_defaults(json *def){
   (*def)["signal"]["minima_diff_rounding"] = std::to_string(0.1);
   (*def)["signal"]["smaller_extremas_ignored"] = std::to_string(false);
   (*def)["signal"]["period_diff_accuracy"] = std::to_string(0.1);
-  (*def)["signal"]["periodic_avg&rms"] = std::to_string(true);
+  (*def)["signal"]["_COMMENT_FREQ_CALC_TYPE"] = "1 - trigger_level_based // "
+                                                "2 - peak & trough_based";
+  (*def)["signal"]["frequency_calc_type"] = std::to_string(1);
+  (*def)["signal"]["periodic_avg&rms"] = std::to_string(false);
   (*def)["signal"]["interpolate_technique"] = "none";
 }
 

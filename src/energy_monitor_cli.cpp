@@ -1,6 +1,16 @@
 #include "energy_monitor_cli.h"
 #include <iostream>
 #include "features/signals/signal.h"
+#include "core/data_IO/pdfWrapper.h"
+
+
+
+/*!
+  @file energy_monitor_cli.cpp
+  @brief the main file where the main() function exists and the program starts executing
+*/
+
+
 
 using v_container = dataTable<double>;
 
@@ -11,18 +21,15 @@ int main(){
   std::string user_input;
   v_container dataContainer;
   file_IO file_manipulation;
-
   cout << "EXTRACTING DATA FROM THE FILE.........." << endl;
-
-
-  file_manipulation.data_import("Load1",&dataContainer,csv);
+  file_manipulation.data_import("Load1.csv",&dataContainer,csv);
 
 
   cout << "COLUMNS NUMBER OF CURRENT TABLE IS :::" << dataContainer.get_col_num() << endl;
   cout << "ROWS NUMBER OF CURRENT TABLE IS :::" << dataContainer.get_row_num() << endl;
 
   /*I HAD TO EXTRACT COLUMNS AND MANIPULATE THEM SINCE THE EXPECTED FORMAT WAS NOT PROVIDED*/
-
+  file_manipulation.pdf_export("sad");
   cout << "REARRANGING DATA.........." << endl;
   std::vector<double> time;
   dataContainer.extractColumn(0,time);
@@ -43,6 +50,7 @@ int main(){
 
   _voltage voltage_input;
   _current current_input;
+
   voltage_input.loadData(voltageTable);
   current_input.loadData(currentTable);
   _power result_power = _power(voltage_input,current_input);
@@ -143,6 +151,7 @@ void analyticBlock(signal *dummySignal, bool show_peaks_troughs){
   std::cout << "SAMPLING_RATE::"<<dummySignal->get_analytics()->avg_sample_time << endl;
   std::cout << "NUM_OF_SAMPLES::"<<dummySignal->get_analytics()->samples_num << endl;
   std::cout << "DATA VIABLE ::" << dummySignal->dataViable() << endl;
+  std::cout << "FREQUENCY ::" << dummySignal->get_analytics()->base_frequency << endl;
 }
 
 

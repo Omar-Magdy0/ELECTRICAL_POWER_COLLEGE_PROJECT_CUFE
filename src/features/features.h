@@ -1,4 +1,12 @@
 #pragma once 
+
+
+/*!
+  @file features.h
+  @brief wrap the features folder
+*/
+
+
 #include "signals/signal.h"
 #include "signals/signal_operation.h"
 #include "signals/electric.h"

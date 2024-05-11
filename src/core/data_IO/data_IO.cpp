@@ -55,10 +55,6 @@ bool file_IO::csv_import(string file_address, v_container *table){
 }
 
 
-bool file_IO::pdf_import(string file_address, v_container *table){
-  return false;
-};
-
 
 
 bool file_IO::csv_export(string file_address, v_container table){
@@ -84,22 +80,12 @@ bool file_IO::csv_export(string file_address, v_container table){
 };
 
 
-bool file_IO::pdf_export(string file_address, v_container table){
-  return false; 
-}
-
-
-
-
 
 bool file_IO::data_import(string file_address,  v_container *data,  int type){
   switch (type)
   {
   case csv:
-    return csv_import(file_address+".csv", data);
-    break;
-  case pdf:
-    return pdf_import(file_address+".pdf", data);
+    return csv_import(file_address, data);
     break;
   default:
     return false;
@@ -111,10 +97,8 @@ bool file_IO::data_export(string file_address, v_container data, int type){
   switch (type)
   {
   case csv:
-    return csv_export(file_address+".csv", data);
+    return csv_export(file_address, data);
     break;
-  case pdf:
-    return pdf_export(file_address+".pdf", data);
   default:
     return false;
     break;

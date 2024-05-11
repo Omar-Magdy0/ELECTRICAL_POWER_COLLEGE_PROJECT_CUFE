@@ -15,6 +15,17 @@ message(STATUS "Source files: ${CMAKE_SOURCE_DIR}")
 
 
 
+include(FetchContent)
+
+FetchContent_Declare(
+    PDFHummus
+    GIT_REPOSITORY https://github.com/galkahana/PDF-Writer.git
+    GIT_TAG v4.6.2
+    FIND_PACKAGE_ARGS
+)
+message(STATUS "downloading PDF HUMMUS")
+FetchContent_MakeAvailable(PDFHummus)
+message(STATUS "download finished")
 
 
 
@@ -29,8 +40,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 
+
 # Add executable
 add_executable(${PROJECT_NAME} ${SOURCES})
+target_link_libraries(${PROJECT_NAME} PUBLIC PDFHummus::PDFWriter)
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 # Link yaml-cpp to your project

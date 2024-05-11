@@ -12,11 +12,18 @@ IMPLEMENTATION AND PROTOTYPES ARE IN HEADER FOR NO-ERROR COMPILING
 using namespace std;
 #define VECTOR_OVERSIZE 1
 
+
+/*!
+  @file dataTable.h
+  @brief 2D dynamic fast and efficient structure for Holding data optimised for longer columns 
+          with function for dataManipulation in this structure 
+          --Templated for various dataTypes
+*/
+
+
 /*
   DYNAMIC DATA HOLDER THAT KEEPS DATA IN RECTANGULAR 2D arrays for now
 */
-
-/*DERIVED CLASS EFFICIENT FOR HORIZONTAL DATA STORAGE*/
 template <typename HELD_DATA>
 class dataTable{
 

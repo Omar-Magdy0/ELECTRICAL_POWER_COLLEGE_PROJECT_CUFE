@@ -7,6 +7,13 @@
 
 
 
+/*!
+  @file setting.h
+  @brief implements a simple interface for permanent settings across different parts across the program
+          using the .json format 
+
+*/
+
   
 class _settings{
   using json = nlohmann::ordered_json;

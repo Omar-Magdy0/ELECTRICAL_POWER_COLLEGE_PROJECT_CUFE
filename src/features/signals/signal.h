@@ -11,6 +11,13 @@ enum class sig_exp{
   sig = 1
 };
   
+/*!
+  @file   signal.h
+  @brief  this file includes the base class "signal" for signals modeling and analysing thier time-domain / frequency-domain properties
+
+*/
+
+
 
 
 using v_container = dataTable<double>;
@@ -72,11 +79,11 @@ class signal{
     double timeEnd;                           //CHECKED
     unsigned int samples_num;                          //CHECKED
 
-    double periods_num;                       //CHECKED
-    double base_frequency;                    //CHECKED
-    double base_angular_frequency;            //CHECKED
-    double periodic_time;                     //CHECKED
-    double duty_cycle;                        //CHECKED
+    double periods_num = 0;                       //CHECKED
+    double base_frequency = 0;                    //CHECKED
+    double base_angular_frequency = 0;            //CHECKED
+    double periodic_time = 0;                     //CHECKED
+    double duty_cycle = 0;                        //CHECKED
   }analytics;
 
   
@@ -100,6 +107,12 @@ using json = nlohmann::json;
     bool smaller_extremas_ignored = stoi(settings.get_setting("signal","smaller_extremas_ignored"));
     double period_diff_accuracy = stod(settings.get_setting("signal","period_diff_accuracy"));
     bool periodic_avg_rms = stoi(settings.get_setting("signal","periodic_avg&rms")); 
+
+    enum freq_calc_t{
+      peakNdtrough = 0,
+      trigger_level = 1,
+    };
+    int frequency_calc_type = stoi(settings.get_setting("signal","frequency_calc_type"));
 
     struct maximas_minimas{
       std::vector<double> value;
@@ -142,7 +155,9 @@ using json = nlohmann::json;
     bool update_local_maximas_minimas();
     /// @brief filter local MAXIMAS and MINIMAS and update ptp data (only top maximas and lowest minimas) 
     bool post_local_maximas_minimas();
-    /// @brief deduce base frequency + angular + number of periods for the signal 
+    bool frequency_peakNdtrough();
+    bool frequency_triggerLevel();
+    /// @brief deduce base frequency + angular + number of periods for the signal
     bool deduce_baseFrequency();
     /// @brief rms and avg based on integer number of signals analysis only
     bool deduce_avg_rms();
@@ -181,15 +196,24 @@ using json = nlohmann::json;
       return timeDomain_analysed; 
     }
     bool dataViable();
-    bool loadData(string name = "signal", string fileLocation = settings.get_setting("signal","import_path"));
+
+    bool loadData(std::string name, std::string fileLocation = settings.get_setting("signal","import_path"));
     bool loadData(v_container _data);
     bool loadData(std::vector<double> time,std::vector<double> vals);
     bool analyse();
 
-    bool exportSignal(string name = "signal" , bool export_all = false, sig_exp expType = sig_exp::csv, string fileLocation = settings.get_setting("signal","export_path"));
+    bool pdf_export(std::string name, std::string file_address = settings.get_setting("signal","export_path"));
+    bool exportSignal(std::string name , bool export_all = false, sig_exp expType = sig_exp::csv, std::string fileLocation = settings.get_setting("signal","export_path"));
+    bool importSignal(std::string name , std::string fileLocation = settings.get_setting("signal","import_path"));
+
+
     const _analytics* get_analytics()const;
     const v_container* get_signal_data()const;
 };
+
+
+
+
 
 
 
