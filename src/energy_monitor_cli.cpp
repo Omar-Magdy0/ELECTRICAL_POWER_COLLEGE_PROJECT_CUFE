@@ -88,9 +88,9 @@ int main(){
   result_power = _power(voltage_input,current_input);
 
   cout << "\n***********FILTERED VOLTAGE ANALYSIS******\n" << endl;
-  analyticBlock(&voltage_input);
+  analyticBlock(&filtered_voltage);
   cout << "\n***********FILTERED CURRENT ANALYSIS******\n" << endl;
-  analyticBlock(&current_input);
+  analyticBlock(&filtered_current);
   cout << "\n***********FILTERED POWER ANALYSIS******\n" << endl;
   analyticBlock(&result_power);
   cout << "POWER FACTOR :::" << result_power.get_PF() << endl;
