@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['g_0',['g',['../classpdf__wrap.html#a4e32a4c2afd107ff5ef46378b77ed4f9',1,'pdf_wrap']]],
+  ['get_5factive_1',['get_active',['../class__power.html#a85962dc04dd04d3d92df433635adadd9',1,'_power']]],
+  ['get_5fanalytics_2',['get_analytics',['../classsignal.html#a415651452de750c161330a32b19cecf7',1,'signal']]],
+  ['get_5fapparent_3',['get_apparent',['../class__power.html#a4392b9361f120f7856cf830bb8c27193',1,'_power']]],
+  ['get_5fcol_5fnum_4',['get_col_num',['../classdata_table.html#a8ff9aeb45ef1882b881067885ebca89d',1,'dataTable']]],
+  ['get_5fcount_5fduration_5',['get_count_duration',['../classtimer__counter.html#ac2851e5d1d1634d1cccfd5ea13dbdc8e',1,'timer_counter']]],
+  ['get_5fcurrent_6',['get_current',['../classappliance.html#a3a30cd1fed0db66a8f220d8a584263c1',1,'appliance']]],
+  ['get_5fdvbdtmaximas_7',['get_dvBdtMaximas',['../classsignal.html#adb23b6d6fbfbfa2e3e7a95f0475bb74e',1,'signal']]],
+  ['get_5fdvbdtminimas_8',['get_dvBdtMinimas',['../classsignal.html#aec445ade2c5b35f6d931f34138bac5db',1,'signal']]],
+  ['get_5fenergy_9',['get_energy',['../class__power.html#ab6b4d396e3ca303ae7ad52e2aae52c73',1,'_power']]],
+  ['get_5ffrequency_10',['get_frequency',['../class__power.html#a018bde97635bf0194cbfb7a57915e3ea',1,'_power']]],
+  ['get_5floadtype_11',['get_loadType',['../class__power.html#a133f405af58e183e67daa44277fc2acd',1,'_power']]],
+  ['get_5fpf_12',['get_PF',['../class__power.html#af55f1b54b8b4c0549a1f39b5f0a5e1cf',1,'_power']]],
+  ['get_5fphase_13',['get_phase',['../class__power.html#a1c768b7fdd8c70f5a792f45eca4906d9',1,'_power']]],
+  ['get_5fpower_14',['get_power',['../classappliance.html#a5fbcbf1eb3f1e9cf852a5f511e01ea24',1,'appliance']]],
+  ['get_5freactive_15',['get_reactive',['../class__power.html#a3dcc0642a9f771283d7c32492dbf4e99',1,'_power']]],
+  ['get_5frow_5fnum_16',['get_row_num',['../classdata_table.html#aa62abb9698fd1bc8aaec0944ef158c00',1,'dataTable']]],
+  ['get_5fsetting_17',['get_setting',['../class__settings.html#ae898ae89af849ca94010c8db998def08',1,'_settings']]],
+  ['get_5fsignal_5fdata_18',['get_signal_data',['../classsignal.html#a7acb301bc8655ec5d8a8d7290f956142',1,'signal']]],
+  ['get_5fvalmaximas_19',['get_valMaximas',['../classsignal.html#a01510f7b1abbde8810128873caab8432',1,'signal']]],
+  ['get_5fvalminimas_20',['get_valMinimas',['../classsignal.html#ab788d18357e814ba4cc91af6e46d443b',1,'signal']]],
+  ['getcurrenttime_21',['getCurrentTime',['../core_8h.html#ac2c0ffb4801d1f87b4b164834351dda2',1,'core.h']]],
+  ['getdata_22',['getData',['../classdata_table.html#a5b8364e76675db2be37a204f3e2dd843',1,'dataTable']]],
+  ['getvalue_23',['getValue',['../classsignal.html#ae2351e611cf67dee5a1d843a53b0f74f',1,'signal']]]
+];

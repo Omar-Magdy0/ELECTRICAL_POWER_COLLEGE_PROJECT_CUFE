@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['pdf_0',['pdf',['../data___i_o_8h.html#a617ddb88ebf58e2f0add63ae88a9f705ae506e0411dba787b677debbe3deaf557',1,'data_IO.h']]],
+  ['pdf_5fexport_1',['pdf_export',['../classappliance.html#adca9d629a6bc3969291ffe3c4e671e95',1,'appliance::pdf_export()'],['../classsignal.html#a7002060d7cf026bc921c09a36e7f7f86',1,'signal::pdf_export()']]],
+  ['pdf_5fwrap_2',['pdf_wrap',['../classpdf__wrap.html',1,'']]],
+  ['pdfwrapper_2eh_3',['pdfWrapper.h',['../pdf_wrapper_8h.html',1,'']]],
+  ['peakndtrough_4',['peakNdtrough',['../classsignal.html#ab26a0599f8e41dfa9db1817aea466b81a822e3017ca455f74db3811073e7c9458',1,'signal']]],
+  ['period_5fdiff_5faccuracy_5',['period_diff_accuracy',['../classsignal.html#a4975ac42279daba369f5f873208d3c89',1,'signal']]],
+  ['periodic_5favg_5frms_6',['periodic_avg_rms',['../classsignal.html#ae6bd7b38e2c6cff2b41713dd1c58d4cd',1,'signal']]],
+  ['periodic_5ftime_7',['periodic_time',['../structsignal_1_1__analytics.html#a8677b753b737ae92dce0f8f068b16723',1,'signal::_analytics']]],
+  ['periods_5fnum_8',['periods_num',['../structsignal_1_1__analytics.html#a276392d973b64c8439c7284fffcff481',1,'signal::_analytics']]],
+  ['pf_5ftype_9',['pf_type',['../class__power.html#a160610704bd59620fef244b7c6f39dff',1,'_power::pf_type()'],['../electric_8h.html#a6f4fa312487468ab53d4f625db0cf164',1,'pf_type:&#160;electric.h']]],
+  ['phase_5fdiff_10',['phase_diff',['../class__signal__operation.html#a392932071ef781f3a78fa02595a45a46',1,'_signal_operation']]],
+  ['positive_11',['positive',['../core_8h.html#af51adb6200815143f3e4d92b4b0048fd',1,'core.h']]],
+  ['post_5flocal_5fmaximas_5fminimas_12',['post_local_maximas_minimas',['../classsignal.html#ad189af81f70122219781f0176b43dc00',1,'signal']]],
+  ['power_5ftype_13',['power_type',['../electric_8h.html#a5f9454ed8c9f61bac6ba9bf7c4365344',1,'electric.h']]],
+  ['pre_5fanalyze_14',['pre_analyze',['../classsignal.html#aa5366e88fa6de25b6df235a2dbb2699d',1,'signal']]],
+  ['process_5ffeedback_15',['process_feedback',['../structprocess__feedback.html',1,'process_feedback'],['../structprocess__feedback.html#a12b0ff3c546a19e78dea46fab8029f56',1,'process_feedback::process_feedback()']]],
+  ['putvalue_16',['putValue',['../classsignal.html#a9e67449d9d524b7f5161592678b2ff54',1,'signal']]]
+];

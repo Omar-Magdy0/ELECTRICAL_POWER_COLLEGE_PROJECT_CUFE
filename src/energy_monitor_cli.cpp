@@ -1,7 +1,7 @@
 #include "energy_monitor_cli.h"
 #include <iostream>
 #include "features/signals/signal.h"
-#include "core/data_IO/pdfWrapper.h"
+
 
 
 
@@ -9,8 +9,6 @@
   @file energy_monitor_cli.cpp
   @brief the main file where the main() function exists and the program starts executing
 */
-
-
 
 using v_container = dataTable<double>;
 
@@ -21,6 +19,25 @@ int main(){
   std::string user_input;
   v_container dataContainer;
   file_IO file_manipulation;
+
+  pdf_wrap PDF_LOVE;
+
+
+  PDF_LOVE.init("SADPDF.PDF");
+  PDF_LOVE.textPiece_start();
+  PDF_LOVE.setFontStyle(5,50,50,50,1);
+  PDF_LOVE.setCursor(LEFT(30), TOP(50));
+  PDF_LOVE.addText("SAD");
+  PDF_LOVE.newLine();
+  PDF_LOVE.addText("SAD BUT TWICE");
+  PDF_LOVE.newLine();
+  PDF_LOVE.addText("SAD BUT THRICE");
+  PDF_LOVE.newLine();
+  PDF_LOVE.textPiece_end();
+  PDF_LOVE.end();
+
+
+
   cout << "EXTRACTING DATA FROM THE FILE.........." << endl;
   file_manipulation.data_import("Load1.csv",&dataContainer,csv);
 
@@ -29,7 +46,8 @@ int main(){
   cout << "ROWS NUMBER OF CURRENT TABLE IS :::" << dataContainer.get_row_num() << endl;
 
   /*I HAD TO EXTRACT COLUMNS AND MANIPULATE THEM SINCE THE EXPECTED FORMAT WAS NOT PROVIDED*/
-  file_manipulation.pdf_export("sad");
+
+
   cout << "REARRANGING DATA.........." << endl;
   std::vector<double> time;
   dataContainer.extractColumn(0,time);
@@ -88,9 +106,9 @@ int main(){
   result_power = _power(voltage_input,current_input);
 
   cout << "\n***********FILTERED VOLTAGE ANALYSIS******\n" << endl;
-  analyticBlock(&filtered_voltage);
+  analyticBlock(&voltage_input);
   cout << "\n***********FILTERED CURRENT ANALYSIS******\n" << endl;
-  analyticBlock(&filtered_current);
+  analyticBlock(&current_input);
   cout << "\n***********FILTERED POWER ANALYSIS******\n" << endl;
   analyticBlock(&result_power);
   cout << "POWER FACTOR :::" << result_power.get_PF() << endl;

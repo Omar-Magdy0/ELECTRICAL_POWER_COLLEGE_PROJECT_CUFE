@@ -1,11 +1,18 @@
 #pragma once 
 
+#pragma comment
+
 #include <string>
 #include <PDFWriter.h>
 #include <PDFPage.h>
 #include <PageContentContext.h>
 #include <PDFFormXObject.h>
 #include <ResourcesDictionary.h>
+
+
+/// THIS FILE WAS PROVIDED BY OMAR_MAGDY_GHAZY EPE2024 As an abstraction for PDFHummus/PDFWriter lib no warranty is provided
+
+
 
 /*!
   @file   pdfWrapper.h
@@ -17,6 +24,9 @@
 
 #define A4_Width  595
 #define A4_Height 842
+
+#define LEFT(n)(n)
+#define TOP(n)(A4_Height - n)
 #define standardFont "resources/OpenSans-Italic.ttf"
 
 class pdf_wrap{
@@ -33,7 +43,7 @@ class pdf_wrap{
   }fontStyle;
 
 public:
-  int right_padding = 40;
+  int left_padding = 40;
   int top_padding = 842 - 40;
   int font_size = 20;
 
@@ -56,12 +66,12 @@ public:
 
   void textPiece_start(){
     pageContentContext->BT();
-    pageContentContext->Tf(font,1);
+    pageContentContext->Tf(font,font_size);
     pageContentContext->k(fontStyle.r,fontStyle.g,fontStyle.b,fontStyle.a);
-    pageContentContext->TL(1);
+    pageContentContext->TL(font_size/4);
   }
 
-  void addText(string text){
+  void addText(std::string text){
     pageContentContext->Tj(text);
   }
 

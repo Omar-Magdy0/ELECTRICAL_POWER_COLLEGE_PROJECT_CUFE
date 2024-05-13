@@ -10,6 +10,7 @@
 
 
 #include "data_IO/data_IO.h"
+#include "data_IO/pdfWrapper.h"
 #include <stdlib.h>
 #include <type_traits>
 #include <string>
