@@ -11,3 +11,6 @@ PDF format export
 
 
 THIS project is missing proper EXCEPTION HANDLING FOR NOW (CRASHES / UNEXPECTED BEHAVIOR is expected)!!
+
+--DOXYGEN Generated Documentation 
+https://omar-magdy0.github.io/ELECTRICAL_POWER_CUFE/
