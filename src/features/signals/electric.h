@@ -188,6 +188,8 @@ class _power: public signal{
       }
     }
 
+    
+
 };
 
 
@@ -200,7 +202,8 @@ inline double tarrif_calc(double energy_in_month)
 	if (energy_in_month <= 100)
 	{
 		if (energy_in_month > 50) cost = 0.68 * (energy_in_month - 50) + 50 * 0.58;
-	}
+    else cost = energy_in_month * 0.58;
+  }
 	else if (energy_in_month <= 650)
 	{
 		if (energy_in_month > 350) cost = 1.4 * (energy_in_month - 350) + 1.25 * 150 + 0.83 * 200;

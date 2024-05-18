@@ -99,12 +99,7 @@ class dataTable{
         }
       }
       //SHRINK THE TABLE TOO TO COMPENSATE FOR OVERSIZING
-      _table.shrink_to_fit();
-      for(unsigned int i = 0; i < _table.size();  i++){
-        _table.at(i).shrink_to_fit();
-      }
-
-
+      _table.resize(_cols_num);
     }
 
     /// @brief Extracts a row from the dataTable in a vector
@@ -131,6 +126,7 @@ class dataTable{
         return false;
       }else{
         returnArray = _table.at(columnNumber);
+        returnArray.resize(_rows_num);
       }
       return true;
     }

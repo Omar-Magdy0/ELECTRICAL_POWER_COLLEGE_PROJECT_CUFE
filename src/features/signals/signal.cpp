@@ -43,7 +43,7 @@ bool signal::loadData(std::vector<double> time, std::vector<double> vals)
   }else{
     for( int idx = 0; idx < time.size(); idx++){
       putValue(vals.at(idx) , idx , _val);
-      putValue(vals.at(idx) , idx , _time);
+      putValue(time.at(idx) , idx , _time);
     }
     return true;
   }
@@ -843,6 +843,13 @@ bool signal::pdf_export(std::string name, std::string file_address)
 {
   pdf_wrap pdf_file;
   string container;
+
+  if(!this->isTimeAnalysed())this->analyse();
+  for(int i = 0; i < this->subSignals_period_based.subSignals.size(); i++){
+    if(!this->subSignals_period_based.subSignals.at(i).isTimeAnalysed() ){
+      subSignals_period_based.subSignals.at(i).analyse();
+    }
+  }
   //A lambda function that keeps making string and values pairs
   auto data_val_pair = [&pdf_file](std::string a, double b){
       pdf_file.setFontStyle(15,90,0,0,1);

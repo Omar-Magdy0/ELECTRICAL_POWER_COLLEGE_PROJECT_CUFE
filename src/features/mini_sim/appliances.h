@@ -87,8 +87,9 @@ class appliance {
     }  
 
     ~appliance(){
-      if( (result_current != NULL) && (unkownCurrent == true) )free(result_current);
+      if( (result_current != NULL))free(result_current);
       if(result_power != NULL)free(result_power);
+      if(volt_input != NULL)free(result_power);
     }
 
     
@@ -119,6 +120,17 @@ class appliance {
           currentTripped = true;
           if(disconnect_on_trip)connected = false;
         }
+
+
+
+        // WE ARE GOING TO ADD HERE COMPLEX LOGIC FOR OVERVOLTAGE PROTEXTION INTERVALS 
+        // OVER CURRENT PROTECTION INTERVALS 
+        // AND OTHER OVER_UNDER FREQUENCY LOGIC
+
+      
+
+
+
   
         inputSignal_idx++;
       }
@@ -202,6 +214,9 @@ class appliance {
       return result_current;
     }
 
+    _voltage* get_voltage(){
+      return volt_input;
+    }
     bool is_connected(){
       return connected;
     }
