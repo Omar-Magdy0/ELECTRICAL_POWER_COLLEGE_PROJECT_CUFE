@@ -29,10 +29,10 @@ void analyticBlock(signal *dummySignal, bool show_peaks_troughs = false);
 int main(){
     std::string string_held;
     std::vector<std::string> module_nd_params;
-    appliance *appliances;
+    appliance *appliances = NULL;
     std::string appliance_name;
-    _voltage *voltage;
-    _current *current;
+    _voltage *voltage = NULL;
+    _current *current = NULL;
     bool quit = false;
 
     while(1){
@@ -211,6 +211,9 @@ int main(){
                 if(current != NULL)delete current;
                 if(voltage != NULL)delete voltage;
                 if(appliances != NULL)delete appliances;
+                current = NULL;
+                voltage = NULL;
+                appliances = NULL;
                 cout << "CLEAN" << endl;
               }else if(command == "appliance_model"){
                 if(module_nd_params.size() >= 3){

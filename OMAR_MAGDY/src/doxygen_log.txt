@@ -1,0 +1,14 @@
+# Doxyfile 1.10.0
+
+PROJECT_NAME           = Energy_monitor
+PROJECT_NUMBER         = 0.3
+PROJECT_BRIEF          = "A basic implementation for simple signal analysis and load modeling"
+OUTPUT_DIRECTORY       = /media/renderer/59265a2b-d6f5-4b6a-ad90-6c1b1b9d04ac/Programming/ELECTRICAL_POWER_CUFE/resources
+EXTRACT_ALL            = YES
+INPUT                  = /media/renderer/59265a2b-d6f5-4b6a-ad90-6c1b1b9d04ac/Programming/ELECTRICAL_POWER_CUFE/src
+RECURSIVE              = YES
+SOURCE_BROWSER         = YES
+HTML_COLORSTYLE_HUE    = 205
+HTML_COLORSTYLE_SAT    = 190
+HTML_COLORSTYLE_GAMMA  = 118
+CLASS_GRAPH            = NO

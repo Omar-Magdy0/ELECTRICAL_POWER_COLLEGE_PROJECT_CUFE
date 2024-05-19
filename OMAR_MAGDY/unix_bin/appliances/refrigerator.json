@@ -1,0 +1,14 @@
+{
+    "refrigerator": {
+        "_maximum_tripVoltage": 400.0,
+        "_maximum_tripVoltage_duration": 0.0,
+        "_maximum_tripCurrent": 10.0,
+        "_maximum_tripCurrent_duration": 0.0,
+        "_R": 0.0,
+        "_L": 0.0,
+        "_C": 0.0,
+        "_real": 0.0,
+        "_complex": 0.0,
+        "disconnect_on_trip": false
+    }
+}

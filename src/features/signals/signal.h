@@ -191,8 +191,7 @@ using json = nlohmann::json;
 
     /// @brief signal value for detecting edges and calculating frequency based on
     double _trigger_level = 0;
-    double _hysteresis_high_threshold = 5;
-    double _hysteresis_low_threshold = -5; 
+
     int minimum_periodic_periodNum = stoi(settings.get_setting("signal", "minimum_periodic_periodNum") );
 
 
@@ -271,6 +270,11 @@ using json = nlohmann::json;
       return &dvBdt_minimas;
     }
 
+
+
+    double _hysteresis_high_threshold = 5;
+    double _hysteresis_low_threshold = -5; 
+    
     /// @brief check if the signal was analysed in the time domain
     /// @return true if it was analysed before 
     const bool isTimeAnalysed(){

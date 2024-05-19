@@ -3,6 +3,7 @@
 #include "../signals/signal.h"
 #include "../signals/signal_operation.h"
 #include "../signals/electric.h"
+#include "../signals/operational_blocks.h"
 #include <fstream>
 
 
@@ -19,12 +20,30 @@
 class appliance {
   using json = nlohmann::ordered_json;
   private:
+    struct _loadAnalyse{
+      hysteresis hyster_block;
+      bool last_hyster_state;
+      double last_rising_edge_time;
+      double last_val = 0;
+      double sum_sqr = 0;
+      bool first_period_passed = false; 
+      bool state_switch = false;
+    }currentAnalysis, voltageAnalysis;
+
+    double under_freq_val;
+    double over_freq_val;
+    double overFreq_startTime;
+    double underFreq_startTime;
+    unsigned int overFreq_period_count;
+    unsigned int underFreq_period_count;
     double maximum_tripVoltage = 0;
+    double max_freq = 0;
+    double min_freq = 0;
     double tripVoltage_startTime = 0;
-    double maximum_tripVoltage_duration = 0;
+    double tripVoltage_duration = 0;
     double maximum_tripCurrent = 0;
     double tripCurrent_startTime = 0;
-    double maximum_tripCurrent_duration = 0;
+    double tripCurrent_duration = 0;
     bool disconnect_on_trip = true;
     bool connected = true;
     double R = 0;
@@ -33,7 +52,7 @@ class appliance {
     double real = 0;
     double complex = 0;
     std::string name;
-    unsigned int inputSignal_idx = 0;
+    unsigned int inputSignal_idx = 1;
 
 
 
@@ -58,9 +77,7 @@ class appliance {
       if(file.is_open()){
         in = json::parse(file);
         maximum_tripVoltage = in[_name]["_maximum_tripVoltage"];
-        maximum_tripVoltage_duration = in[_name]["_maximum_tripVoltage_duration"];
         maximum_tripCurrent = in[_name]["_maximum_tripCurrent"];
-        maximum_tripCurrent_duration = in[_name]["_maximum_tripCurrent_duration"];
         R = in[_name]["_R"];
         L = in[_name]["_L"];
         C = in[_name]["_C"];
@@ -81,6 +98,9 @@ class appliance {
       if(!volt_input->isTimeAnalysed())volt_input->analyse();
       if(!result_current->isTimeAnalysed())result_current->analyse();
 
+
+      currentAnalysis.hyster_block.set_params(result_current->_hysteresis_low_threshold,  result_current->_hysteresis_high_threshold);
+      voltageAnalysis.hyster_block.set_params(volt_input->_hysteresis_low_threshold,  volt_input->_hysteresis_high_threshold);
         unkownCurrent = false;
         result_power = new _power(*volt_input,*result_current);
         result_power->analyse();
@@ -109,6 +129,7 @@ class appliance {
           thisInstantCurrent = result_current->get_signal_data()->getData(inputSignal_idx,_val);
         }
 
+/*
         if(abs(thisInstantVoltage) > abs(maximum_tripVoltage) && !voltageTripped){
           tripVoltage_startTime = thisInstantTime;
           voltageTripped = true;
@@ -121,17 +142,73 @@ class appliance {
           if(disconnect_on_trip)connected = false;
         }
 
-
+*/
 
         // WE ARE GOING TO ADD HERE COMPLEX LOGIC FOR OVERVOLTAGE PROTEXTION INTERVALS 
         // OVER CURRENT PROTECTION INTERVALS 
         // AND OTHER OVER_UNDER FREQUENCY LOGIC
-
+        // QUICK ON THE GO NO TIME LEFT
       
+          double current_hyster_state_current = currentAnalysis.hyster_block.update_state(thisInstantCurrent);
+          double current_hyster_state_voltage = voltageAnalysis.hyster_block.update_state(thisInstantVoltage);
+
+          if(current_hyster_state_current != currentAnalysis.last_hyster_state && current_hyster_state_current == true){
+            double current_rising_edge_time = thisInstantTime;
+            double max_rms_current = maximum_tripCurrent/sqrt(2);
+            double this_period_time = current_rising_edge_time - currentAnalysis.last_rising_edge_time;
+            double this_period_rms = sqrt(currentAnalysis.sum_sqr/(this_period_time));
+            if(this_period_rms > max_rms_current && !currentTripped && currentAnalysis.first_period_passed){
+              //CURRENT TRIP START
+              tripCurrent_startTime = thisInstantTime;
+              tripCurrent_duration += this_period_time;
+              currentTripped = true;
+            }else if(this_period_rms > max_rms_current){
+              tripCurrent_duration += this_period_time;
+            }
+            currentAnalysis.last_rising_edge_time = current_rising_edge_time;
+            currentAnalysis.sum_sqr = 0;
+            currentAnalysis.first_period_passed = true;
+          }else{
+            currentAnalysis.sum_sqr += (thisInstantCurrent*thisInstantCurrent + currentAnalysis.last_val*currentAnalysis.last_val)/2*result_current->get_analytics()->avg_sample_time;
+          }
 
 
+            if(current_hyster_state_voltage != voltageAnalysis.last_hyster_state && current_hyster_state_voltage == true){
+              double current_rising_edge_time = thisInstantTime;
+              double max_rms_voltage = maximum_tripVoltage/sqrt(2);
+              double this_period_time = current_rising_edge_time - voltageAnalysis.last_rising_edge_time;
+              double this_period_rms = sqrt(voltageAnalysis.sum_sqr/(this_period_time));
+              if(this_period_time > 1/min_freq){
+              
+              //under Frequency
+              //cout << "UNDER FREQ " << thisInstantTime << endl; 
+              underFreq_startTime = thisInstantTime;
+              underFreq_period_count++;
+            }else if(this_period_time < 1/max_freq){
+              //over Frequency
+              //cout << "OVER FREQ " << thisInstantTime << endl;
+              overFreq_startTime = thisInstantTime;
+              overFreq_period_count++;
+            }
+            if(this_period_rms > max_rms_voltage && !voltageTripped){
+              //VOLTAGE TRIP START
+              tripVoltage_duration += this_period_time;
+              tripVoltage_startTime = thisInstantTime;
+              voltageTripped = true;
+            }else if(this_period_rms > max_rms_voltage){
+              tripVoltage_duration += this_period_time;
+            }
 
-  
+            voltageAnalysis.last_rising_edge_time = current_rising_edge_time;
+            voltageAnalysis.sum_sqr = 0;
+          }else {
+            voltageAnalysis.sum_sqr += (thisInstantVoltage*thisInstantVoltage + voltageAnalysis.last_val*voltageAnalysis.last_val)/2*volt_input->get_analytics()->avg_sample_time;
+          }
+////        
+          voltageAnalysis.last_val = thisInstantVoltage;
+          currentAnalysis.last_val = thisInstantCurrent;
+          currentAnalysis.last_hyster_state = current_hyster_state_current;
+          voltageAnalysis.last_hyster_state = current_hyster_state_voltage;
         inputSignal_idx++;
       }
     }
@@ -151,9 +228,9 @@ class appliance {
       json out;
       ofstream fileout;
       out[name]["_maximum_tripVoltage"] = (_maximum_tripVoltage);
-      out[name]["_maximum_tripVoltage_duration"] = (_maximum_tripVoltage_duration);
       out[name]["_maximum_tripCurrent"] = (_maximum_tripCurrent);
-      out[name]["_maximum_tripCurrent_duration"] = (_maximum_tripCurrent_duration);
+      out[name]["_max_freq"] = (max_freq);
+      out[name]["_min_freq"] = (min_freq);
       out[name]["_R"] = (_R);
       out[name]["_L"] = (_L);
       out[name]["_C"] = (_C);
@@ -180,9 +257,9 @@ class appliance {
       if(file.is_open()){
         in = json::parse(file);
         maximum_tripVoltage = in[name]["_maximum_tripVoltage"];
-        maximum_tripVoltage_duration = in[name]["_maximum_tripVoltage_duration"];
         maximum_tripCurrent = in[name]["_maximum_tripCurrent"];
-        maximum_tripCurrent_duration = in[name]["_maximum_tripCurrent_duration"];
+        max_freq = in[name]["_max_freq"];
+        min_freq = in[name]["_min_freq"];
         R = in[name]["_R"];
         L = in[name]["_L"];
         C = in[name]["_C"];

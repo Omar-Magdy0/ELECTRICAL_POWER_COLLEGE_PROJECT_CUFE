@@ -8,7 +8,7 @@ class hysteresis{
   double high_threshold;
 
   public:
-  hysteresis(double _low_threshold,  double _high_threshold, bool _initial_state = false){
+  hysteresis(double _low_threshold = 0,  double _high_threshold = 0, bool _initial_state = false){
     low_threshold = _low_threshold;
     high_threshold = _high_threshold;
     state = _initial_state;
@@ -21,6 +21,11 @@ class hysteresis{
       state = false;
     }
     return state;
+  }
+
+  void set_params(double _low_threshold,  double _high_threshold){
+    low_threshold = _low_threshold;
+    high_threshold = _high_threshold;
   }
 };
 

@@ -50,6 +50,7 @@ class _power: public signal{
     double powerFactor = 0;
     double phase = 0xFFFFFFFFFFFFFFFF;  //just initialize with an impossible phase number to detect if we change it
     bool dynamic_loading = false;
+    
     //We keep the pointers assosiated with the multiplication if any happens
     _current* base_current = NULL;
     _voltage* base_volt = NULL;
@@ -187,9 +188,6 @@ class _power: public signal{
         break;
       }
     }
-
-    
-
 };
 
 
@@ -202,7 +200,7 @@ inline double tarrif_calc(double energy_in_month)
 	if (energy_in_month <= 100)
 	{
 		if (energy_in_month > 50) cost = 0.68 * (energy_in_month - 50) + 50 * 0.58;
-    else cost = energy_in_month * 0.58;
+    else cost = energy_in_month* 0.58;
   }
 	else if (energy_in_month <= 650)
 	{
